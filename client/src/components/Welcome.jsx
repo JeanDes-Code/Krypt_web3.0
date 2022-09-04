@@ -1,7 +1,9 @@
+import React, { useContext } from 'react'
 import { AiFillPlayCircle } from 'react-icons/ai'
 import { SiEthereum } from 'react-icons/si'
 import { BsInfoCircle } from 'react-icons/bs'
 
+import { TransactionContext } from '../context/TransactionContext'
 import { Loader } from './'
 
 const commonStyles =
@@ -19,8 +21,24 @@ const Input = ({ placeholder, name, type, value, handleChange }) => (
 )
 
 const Welcome = () => {
-    const connectWallet = () => {}
-    const handleSubmit = () => {}
+    const {
+        connectWallet,
+        currentAccount,
+        formData,
+        sendTransaction,
+        handleChange,
+    } = useContext(TransactionContext)
+
+    const handleSubmit = (e) => {
+        const { addressTo, amount, keyword, message } = formData
+
+        e.preventDefault()
+
+        if (!addressTo || !amount || !keyword || !message) return
+
+        sendTransaction()
+    }
+
     return (
         <div className="flex w-full justify-center items-center">
             <div className="flex mf:flex-row flex-col items-start justify-between md:p-20 py-12 px-4">
@@ -32,15 +50,17 @@ const Welcome = () => {
                         Explorez le monde de la cryptomonnaie. Achetez et vendez
                         des cryptomonnaies facilement sur Krypto.
                     </p>
-                    <button
-                        type="button"
-                        onClick={connectWallet}
-                        className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-                    >
-                        <p className="text-white text-base font-semibold">
-                            Connectez votre Wallet
-                        </p>
-                    </button>
+                    {!currentAccount && (
+                        <button
+                            type="button"
+                            onClick={connectWallet}
+                            className="flex flex-row justify-center items-center my-5 bg-[#2952e3] p-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
+                        >
+                            <p className="text-white text-base font-semibold">
+                                Connectez votre Wallet
+                            </p>
+                        </button>
+                    )}
                     <div className="grid sm:grid-cols-3 grid-cols-2 w-full mt-10">
                         <div className={`rounded-tl-2xl ${commonStyles}`}>
                             Fiabilité
@@ -83,25 +103,25 @@ const Welcome = () => {
                             placeholder="Destinataire"
                             name="addressTo"
                             type="text"
-                            handleChange={() => {}}
+                            handleChange={handleChange}
                         />
                         <Input
                             placeholder="Quantité (ETH)"
                             name="amount"
                             type="number"
-                            handleChange={() => {}}
+                            handleChange={handleChange}
                         />
                         <Input
                             placeholder="Mot clé (gif)"
                             name="keyword"
                             type="text"
-                            handleChange={() => {}}
+                            handleChange={handleChange}
                         />
                         <Input
                             placeholder="Ecrire un message"
                             name="message"
                             type="text"
-                            handleChange={() => {}}
+                            handleChange={handleChange}
                         />
                         <div className="h-[1px] w-full bg-gray-400 my-2 " />
                         {false ? (

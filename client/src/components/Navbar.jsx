@@ -55,7 +55,7 @@ const Navbar = () => {
                             'Marché',
                             'Echanger',
                             'Tutoriels',
-                            'Portefeuille',
+                            'Portefeuilles',
                         ].map((item, index) => (
                             <NavBarItem
                                 key={item + index}
